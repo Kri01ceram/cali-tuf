@@ -27,7 +27,7 @@ export default function HeroImage({
   const label = monthYearText ?? formatMonthYear(date ?? new Date());
 
   const baseClassName =
-    "relative w-full overflow-hidden bg-zinc-200 dark:bg-zinc-900 h-56 sm:h-72 md:h-96";
+    "relative w-full overflow-hidden bg-zinc-200 h-56 sm:h-72 md:h-96";
 
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>

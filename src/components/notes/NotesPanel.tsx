@@ -41,7 +41,7 @@ export default function NotesPanel({
   endDate,
 }: NotesPanelProps) {
   const baseClassName =
-    "rounded-xl border border-black/[.08] bg-background p-4 shadow-sm shadow-black/[.04] dark:border-white/[.145] dark:shadow-white/[.03]";
+    "rounded-xl border border-black/[.08] bg-background p-4 shadow-sm shadow-black/[.04]";
 
   const rangeKey = useMemo(
     () => toRangeKey(startDate, endDate),
@@ -92,7 +92,7 @@ export default function NotesPanel({
           }
         }}
         placeholder="Write notes…"
-        className="mt-3 min-h-32 w-full resize-y rounded-lg border border-black/[.08] bg-transparent p-3 text-sm leading-6 text-foreground shadow-sm shadow-black/[.02] transition-colors transition-shadow duration-150 ease-out placeholder:text-zinc-500 hover:border-black/[.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12] dark:border-white/[.14] dark:shadow-white/[.02] dark:placeholder:text-zinc-500 dark:hover:border-white/[.18] dark:focus-visible:ring-white/[.18]"
+        className="mt-3 min-h-32 w-full resize-y rounded-lg border border-black/[.08] bg-transparent p-3 text-sm leading-6 text-foreground shadow-sm shadow-black/[.02] transition-colors transition-shadow duration-150 ease-out placeholder:text-zinc-500 hover:border-black/[.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
       />
     </section>
   );
