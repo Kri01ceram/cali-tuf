@@ -13,6 +13,8 @@ import {
 import { useState } from "react";
 
 export type CalendarGridProps = {
+  startDate?: Date | null;
+  endDate?: Date | null;
   onDayClick?: (day: number) => void;
   onRangeChange?: (startDate: Date | null, endDate: Date | null) => void;
   className?: string;
@@ -21,6 +23,8 @@ export type CalendarGridProps = {
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
 
 export default function CalendarGrid({
+  startDate: controlledStartDate,
+  endDate: controlledEndDate,
   onDayClick,
   onRangeChange,
   className,
@@ -30,35 +34,45 @@ export default function CalendarGrid({
   const monthEnd = endOfMonth(today);
   const dates = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const isControlled =
+    controlledStartDate !== undefined || controlledEndDate !== undefined;
+
+  const [uncontrolledStartDate, setUncontrolledStartDate] =
+    useState<Date | null>(null);
+  const [uncontrolledEndDate, setUncontrolledEndDate] = useState<Date | null>(null);
+
+  const startDate = isControlled ? (controlledStartDate ?? null) : uncontrolledStartDate;
+  const endDate = isControlled ? (controlledEndDate ?? null) : uncontrolledEndDate;
 
   // date-fns getDay: 0=Sun..6=Sat; convert to Mon=0..Sun=6
   const leadingEmptyCells = (getDay(monthStart) + 6) % 7;
   const trailingEmptyCells =
     (7 - ((leadingEmptyCells + dates.length) % 7)) % 7;
 
+  function setRange(nextStart: Date | null, nextEnd: Date | null) {
+    if (!isControlled) {
+      setUncontrolledStartDate(nextStart);
+      setUncontrolledEndDate(nextEnd);
+    }
+    onRangeChange?.(nextStart, nextEnd);
+  }
+
   function handleDateClick(date: Date) {
     // First click -> start
     // Second click -> end (swap if earlier)
     // Third click -> reset selection (start a new selection)
     if (startDate === null || (startDate !== null && endDate !== null)) {
-      setStartDate(date);
-      setEndDate(null);
-      onRangeChange?.(date, null);
+      setRange(date, null);
       return;
     }
 
     // startDate is set and endDate is not set
     if (isBefore(date, startDate)) {
-      setStartDate(date);
-      setEndDate(startDate);
-      onRangeChange?.(date, startDate);
+      setRange(date, startDate);
       return;
     }
 
-    setEndDate(date);
-    onRangeChange?.(startDate, date);
+    setRange(startDate, date);
   }
 
   return (
