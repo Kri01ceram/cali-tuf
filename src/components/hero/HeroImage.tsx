@@ -45,7 +45,7 @@ export default function HeroImage({
       <div className="absolute inset-0 bg-blue-600/10" />
 
       <div className="absolute bottom-4 right-4 text-right">
-        <p className="text-lg font-semibold tracking-tight text-white sm:text-xl md:text-2xl">
+        <p className="text-lg font-semibold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
           {label}
         </p>
       </div>

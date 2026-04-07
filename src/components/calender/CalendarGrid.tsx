@@ -77,18 +77,18 @@ export default function CalendarGrid({
 
   return (
     <div className={className ?? ""}>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {DAYS_OF_WEEK.map((label) => (
           <div
             key={label}
-            className="h-7 rounded bg-black/[.04] text-center text-xs font-medium leading-7 text-zinc-700 dark:bg-white/[.06] dark:text-zinc-300"
+            className="h-6 rounded bg-black/[.04] text-center text-[11px] font-semibold leading-6 text-zinc-700 dark:bg-white/[.06] dark:text-zinc-300 sm:h-7 sm:text-xs sm:leading-7"
           >
             {label}
           </div>
         ))}
       </div>
 
-      <div className="mt-2 grid grid-cols-7 gap-2">
+      <div className="mt-2 grid grid-cols-7 gap-1 sm:gap-2">
         {Array.from({ length: leadingEmptyCells }, (_, index) => (
           <div
             key={`leading-empty-${index}`}
@@ -101,6 +101,7 @@ export default function CalendarGrid({
           const day = date.getDate();
           const isStart = startDate ? isSameDay(date, startDate) : false;
           const isEnd = endDate ? isSameDay(date, endDate) : false;
+          const isToday = isSameDay(date, today);
           const isInRange =
             startDate && endDate
               ? isAfter(date, startDate) && isBefore(date, endDate)
@@ -108,7 +109,7 @@ export default function CalendarGrid({
           const isEndpoint = isStart || isEnd;
 
           const buttonClassName =
-            "aspect-square w-full rounded-lg border border-black/[.06] p-2 text-left text-sm font-medium text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12] dark:border-white/[.10] dark:focus-visible:ring-white/[.18]" +
+            "aspect-square w-full rounded-lg border border-black/[.06] p-1.5 text-left text-xs font-medium text-foreground shadow-sm shadow-black/[.03] transition-colors transition-shadow duration-150 ease-out hover:border-black/[.12] hover:shadow-black/[.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12] active:shadow-black/[.03] dark:border-white/[.10] dark:shadow-white/[.02] dark:hover:border-white/[.18] dark:hover:shadow-white/[.05] dark:focus-visible:ring-white/[.18] sm:p-2 sm:text-sm" +
             (isInRange
               ? " bg-blue-600/10 hover:bg-blue-600/15 dark:bg-blue-400/15 dark:hover:bg-blue-400/20"
               : " bg-black/[.02] hover:bg-black/[.04] dark:bg-white/[.04] dark:hover:bg-white/[.06]");
@@ -124,9 +125,14 @@ export default function CalendarGrid({
             className={buttonClassName}
             aria-label={`Day ${day}`}
             aria-pressed={isEndpoint || isInRange}
+            aria-current={isToday ? "date" : undefined}
           >
             {isEndpoint ? (
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white sm:h-8 sm:w-8 sm:text-sm">
+                {day}
+              </span>
+            ) : isToday ? (
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full font-semibold text-foreground ring-2 ring-blue-600/35 dark:ring-blue-400/35 sm:h-8 sm:w-8">
                 {day}
               </span>
             ) : (
