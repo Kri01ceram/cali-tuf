@@ -14,12 +14,17 @@ import { useState } from "react";
 
 export type CalendarGridProps = {
   onDayClick?: (day: number) => void;
+  onRangeChange?: (startDate: Date | null, endDate: Date | null) => void;
   className?: string;
 };
 
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
 
-export default function CalendarGrid({ onDayClick, className }: CalendarGridProps) {
+export default function CalendarGrid({
+  onDayClick,
+  onRangeChange,
+  className,
+}: CalendarGridProps) {
   const today = new Date();
   const monthStart = startOfMonth(today);
   const monthEnd = endOfMonth(today);
@@ -40,6 +45,7 @@ export default function CalendarGrid({ onDayClick, className }: CalendarGridProp
     if (startDate === null || (startDate !== null && endDate !== null)) {
       setStartDate(date);
       setEndDate(null);
+      onRangeChange?.(date, null);
       return;
     }
 
@@ -47,10 +53,12 @@ export default function CalendarGrid({ onDayClick, className }: CalendarGridProp
     if (isBefore(date, startDate)) {
       setStartDate(date);
       setEndDate(startDate);
+      onRangeChange?.(date, startDate);
       return;
     }
 
     setEndDate(date);
+    onRangeChange?.(startDate, date);
   }
 
   return (
