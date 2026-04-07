@@ -38,17 +38,29 @@ export default function CalendarLayout() {
     <div className="flex min-h-screen w-full items-center justify-center bg-zinc-50 p-3 text-foreground sm:p-6">
       <div className="w-full max-w-6xl overflow-hidden rounded-2xl bg-background shadow-lg ring-1 ring-black/[.08]">
         <div className="relative">
-          <div className="relative z-20 h-9 bg-zinc-900 sm:h-10">
-            <div className="absolute inset-x-0 bottom-0 h-px bg-black/30" />
+          <div className="relative z-20 h-10 bg-gradient-to-b from-zinc-200 to-zinc-50 sm:h-12">
+            <div className="absolute inset-x-0 bottom-0 h-px bg-black/[.10]" />
+            <div className="absolute inset-x-0 bottom-0 h-3 shadow-[inset_0_-12px_16px_rgba(0,0,0,0.06)]" />
 
-            <div className="pointer-events-none absolute inset-x-6 -bottom-3 z-30 flex justify-between sm:inset-x-10 sm:-bottom-3.5">
-              {Array.from({ length: 12 }, (_, index) => (
-                <span
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={index}
-                  className="h-6 w-6 rounded-full border-2 border-zinc-950/80 bg-transparent shadow-[0_1px_0_rgba(0,0,0,0.18)] sm:h-7 sm:w-7"
-                />
-              ))}
+            <div className="pointer-events-none absolute inset-x-4 -bottom-3 z-30 flex items-start justify-between sm:inset-x-8 sm:-bottom-3.5">
+              {Array.from({ length: 24 }, (_, index) => {
+                const isCenter = index === 12;
+
+                return (
+                  <span
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={index}
+                    className={
+                      "relative rounded-t-full border-2 border-zinc-950/90 border-b-0 bg-transparent shadow-[0_1px_0_rgba(0,0,0,0.22)] " +
+                      "before:absolute before:inset-0 before:rounded-t-full before:border before:border-white/70 before:border-b-0 before:opacity-60 before:content-[''] " +
+                      "after:absolute after:left-1/2 after:top-full after:mt-0.5 after:-translate-x-1/2 after:rounded-full after:bg-black/25 after:blur-[1px] after:opacity-60 after:content-[''] " +
+                      (isCenter
+                        ? "h-9 w-6 -translate-y-1 sm:h-10 sm:w-7 after:h-2 after:w-8"
+                        : "h-7 w-4 sm:h-8 sm:w-[18px] after:h-1.5 after:w-6")
+                    }
+                  />
+                );
+              })}
             </div>
           </div>
 
