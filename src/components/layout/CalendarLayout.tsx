@@ -92,11 +92,6 @@ export default function CalendarLayout() {
         />
 
         <div className="relative overflow-hidden rounded-[12px] bg-white shadow-[0_16px_48px_rgba(0,0,0,0.14)]">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-0 z-40 h-10 w-16 -translate-x-1/2 -translate-y-1/2 rounded-b-[999px] bg-white shadow-[0_10px_20px_rgba(0,0,0,0.12)]"
-          />
-
           <div className="relative">
             <div className="relative z-30 bg-white pb-2 pt-4">
               <div
@@ -162,8 +157,6 @@ export default function CalendarLayout() {
                   </div>
                 </div>
               </div>
-
-              <div aria-hidden="true" className="mt-3 h-px w-full bg-black/[.06]" />
             </div>
 
             <div className="relative z-10">
