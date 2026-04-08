@@ -1,8 +1,10 @@
 # Cali-TUF
 
-Thanks to **Striver** and his **Take U Forward (TUF)** platform for my coding journey till now.
+Hi Striver,
 
-Hope you will like this.
+Thank you for everything you’ve built through **Take U Forward (TUF)**. A huge part of my coding journey till now is because of your content and the way you teach—clear, practical, and motivating.
+
+I made this small project as a step in that journey. Hope you’ll like it.
 
 ## Run Locally
 
