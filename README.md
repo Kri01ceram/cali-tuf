@@ -29,7 +29,7 @@ npm run dev
 
 3) Open the app
 
-- Visit cali-tuf.vercel.app
+- Visit c[ali-tuf.vercel.app](https://cali-tuf.vercel.app/)
 
 ### Other useful scripts
 
