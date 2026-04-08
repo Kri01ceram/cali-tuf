@@ -47,8 +47,8 @@ export default function HeroImage({
   );
 
   const heroCircleClassName = showQuote
-    ? "absolute -left-[16rem] top-[calc(100%-32rem)] h-[32rem] w-[32rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
-    : "absolute -left-[16rem] top-[calc(100%-32rem)] h-[32rem] w-[32rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
+    ? "absolute -left-[13rem] top-[calc(100%-26rem)] h-[26rem] w-[26rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
+    : "absolute -left-[13rem] top-[calc(100%-26rem)] h-[26rem] w-[26rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
 
   const baseClassName = "relative w-full overflow-hidden bg-white";
 
@@ -68,20 +68,15 @@ export default function HeroImage({
       />
 
       {showQuote ? (
-        <div className="pointer-events-none absolute inset-x-4 top-6 z-20 sm:inset-x-auto sm:left-10 sm:top-12 sm:max-w-[20rem]">
+        <div className="pointer-events-none absolute inset-x-4 top-5 z-20 sm:inset-x-auto sm:left-10 sm:top-12 sm:max-w-[20rem]">
           <p
-            className="break-words text-pretty text-left text-sm font-semibold leading-snug text-white sm:hidden"
-            style={{
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 6,
-              overflow: "hidden",
-            }}
+            className={
+              "break-words text-pretty text-left font-semibold text-white " +
+              "text-sm leading-snug sm:text-3xl sm:leading-tight " +
+              "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:6] overflow-hidden " +
+              "sm:[display:block] sm:[-webkit-box-orient:unset] sm:[-webkit-line-clamp:unset] sm:overflow-visible"
+            }
           >
-            {quoteContent}
-          </p>
-
-          <p className="hidden break-words text-pretty text-left text-3xl font-semibold leading-tight text-white sm:block">
             {quoteContent}
           </p>
         </div>
