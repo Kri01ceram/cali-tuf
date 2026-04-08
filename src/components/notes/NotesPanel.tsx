@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export type NotesPanelProps = {
   className?: string;
@@ -46,6 +46,12 @@ export default function NotesPanel({
 }: NotesPanelProps) {
   const baseClassName = "min-w-0";
 
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
+
   const rangeKey = useMemo(
     () => toRangeKey(startDate, endDate),
     [startDate, endDate]
@@ -66,12 +72,14 @@ export default function NotesPanel({
 
   const initialText = useMemo(() => {
     void refreshToken;
+    if (!hasHydrated) return "";
+
     try {
       return window.localStorage.getItem(fullStorageKey) ?? "";
     } catch {
       return "";
     }
-  }, [fullStorageKey, refreshToken]);
+  }, [fullStorageKey, refreshToken, hasHydrated]);
 
   return (
     <section
@@ -89,7 +97,7 @@ export default function NotesPanel({
       </div>
 
       <textarea
-        key={`${fullStorageKey}:${refreshToken ?? ""}`}
+        key={`${fullStorageKey}:${refreshToken ?? ""}:${hasHydrated ? "1" : "0"}`}
         defaultValue={initialText}
         onChange={(event) => {
           try {

@@ -114,7 +114,7 @@ export default function CalendarGrid({
           const day = date.getDate();
           const isStart = startDate ? isSameDay(date, startDate) : false;
           const isEnd = endDate ? isSameDay(date, endDate) : false;
-          const isToday = isSameDay(date, today);
+          const isToday = today ? isSameDay(date, today) : false;
           const isInRange =
             startDate && endDate
               ? isAfter(date, startDate) && isBefore(date, endDate)

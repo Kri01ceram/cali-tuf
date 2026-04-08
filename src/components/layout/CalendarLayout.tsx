@@ -45,11 +45,15 @@ function priorityRank(priority: TaskPriority) {
 export default function CalendarLayout() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
+  const [visibleMonth, setVisibleMonth] = useState(() => new Date(2000, 0, 1));
   const [monthDirection, setMonthDirection] = useState<1 | -1>(1);
   const [isMobileNotesOpen, setIsMobileNotesOpen] = useState(false);
 
   const [tasks, setTasks] = useState<CalendarTask[]>([]);
+
+  useEffect(() => {
+    setVisibleMonth(startOfMonth(new Date()));
+  }, []);
 
   useEffect(() => {
     try {
