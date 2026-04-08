@@ -29,7 +29,7 @@ npm run dev
 
 3) Open the app
 
-- Visit http://localhost:3000
+- Visit cali-tuf.vercel.app
 
 ### Other useful scripts
 
