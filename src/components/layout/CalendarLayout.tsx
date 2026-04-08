@@ -1,8 +1,8 @@
 "use client";
 
-import { addMonths, format, startOfMonth, subMonths } from "date-fns";
+import { addMonths, startOfMonth, subMonths } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
 import CalendarGrid from "../calender/CalendarGrid";
 import HeroImage from "../hero/HeroImage";
@@ -13,11 +13,6 @@ export default function CalendarLayout() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
   const [monthDirection, setMonthDirection] = useState<1 | -1>(1);
-
-  const monthLabel = useMemo(
-    () => format(visibleMonth, "MMMM yyyy"),
-    [visibleMonth]
-  );
 
   const handleRangeChange = useCallback((nextStart: Date | null, nextEnd: Date | null) => {
     setStartDate(nextStart);
@@ -36,13 +31,34 @@ export default function CalendarLayout() {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-white p-4 text-foreground sm:p-8">
-      <div className="relative w-full max-w-[980px]">
+      <div className="relative w-full max-w-[880px]">
+        <div className="mb-3 flex justify-end">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={goPrevMonth}
+              aria-label="Previous month"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/[.08] bg-white text-sm font-semibold text-foreground shadow-sm shadow-black/[.04] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+            <button
+              type="button"
+              onClick={goNextMonth}
+              aria-label="Next month"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/[.08] bg-white text-sm font-semibold text-foreground shadow-sm shadow-black/[.04] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+        </div>
+
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-[calc(100%-18px)] h-10 w-[88%] -translate-x-1/2 rounded-full bg-black/25 blur-2xl opacity-20"
+          className="pointer-events-none absolute left-1/2 top-[calc(100%-18px)] h-12 w-[90%] -translate-x-1/2 rounded-full bg-black/30 blur-3xl opacity-25"
         />
 
-        <div className="relative overflow-hidden rounded-[12px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.10)]">
+        <div className="relative overflow-hidden rounded-[12px] bg-white shadow-[0_16px_48px_rgba(0,0,0,0.14)]">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-0 z-40 h-10 w-16 -translate-x-1/2 -translate-y-1/2 rounded-b-[999px] bg-white shadow-[0_10px_20px_rgba(0,0,0,0.12)]"
@@ -73,41 +89,16 @@ export default function CalendarLayout() {
                 alt="Calendar hero"
                 date={visibleMonth}
                 priority
-                className="h-72 sm:h-80 md:h-[360px]"
+                className="h-[360px] sm:h-[420px] md:h-[480px]"
               />
             </div>
           </div>
 
-          <div className="grid gap-6 p-5 md:grid-cols-[1fr_1.6fr] md:gap-8 md:p-7">
-            <NotesPanel startDate={startDate} endDate={endDate} />
+          <div className="grid gap-5 p-4 md:grid-cols-[1fr_1.6fr] md:gap-7 md:p-6">
+            <NotesPanel className="mt-2 md:mt-3" startDate={startDate} endDate={endDate} />
 
             <section className="min-w-0">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-base font-bold tracking-tight text-foreground sm:text-lg">
-                  {monthLabel}
-                </h2>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={goPrevMonth}
-                    aria-label="Previous month"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/[.08] bg-white text-sm font-semibold text-foreground shadow-sm shadow-black/[.04] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
-                  >
-                    <span aria-hidden="true">‹</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={goNextMonth}
-                    aria-label="Next month"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/[.08] bg-white text-sm font-semibold text-foreground shadow-sm shadow-black/[.04] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
-                  >
-                    <span aria-hidden="true">›</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-4">
+              <div className="mt-1">
                 <AnimatePresence initial={false} mode="wait" custom={monthDirection}>
                   <motion.div
                     key={visibleMonth.toISOString()}

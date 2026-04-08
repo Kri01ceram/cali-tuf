@@ -93,12 +93,12 @@ export default function CalendarGrid({
 
   return (
     <div className={className ?? ""}>
-      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
         {DAYS_OF_WEEK.map((label, index) => (
           <div
             key={label}
             className={
-              "h-7 rounded-md bg-black/[.03] text-center text-[11px] font-semibold leading-7 tracking-wide " +
+              "h-6 rounded-md bg-black/[.03] text-center text-[10px] font-semibold leading-6 tracking-wide " +
               (index === sundayIndex ? "text-[#2ea3f2]" : "text-zinc-700")
             }
           >
@@ -107,7 +107,7 @@ export default function CalendarGrid({
         ))}
       </div>
 
-      <div className="mt-2 grid grid-cols-7 gap-1.5 sm:gap-2">
+      <div className="mt-2 grid grid-cols-7 gap-1 sm:gap-1.5">
         {dates.map((date) => {
           const day = date.getDate();
           const isStart = startDate ? isSameDay(date, startDate) : false;
@@ -122,7 +122,7 @@ export default function CalendarGrid({
           const isSunday = getDay(date) === 0;
 
           const buttonClassName =
-            "aspect-square w-full rounded-lg p-1.5 text-left text-xs font-medium transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10] sm:p-2 sm:text-sm" +
+            "aspect-square w-full rounded-lg p-1 text-left text-[11px] font-medium transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10] sm:p-1.5 sm:text-xs" +
             (isOutsideMonth ? " text-zinc-400" : " text-foreground") +
             (isSunday && !isEndpoint && !isInRange
               ? " text-[#2ea3f2]"
@@ -145,11 +145,11 @@ export default function CalendarGrid({
               aria-current={isToday ? "date" : undefined}
             >
               {isEndpoint ? (
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#2ea3f2] text-xs font-semibold text-white sm:h-8 sm:w-8 sm:text-sm">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#2ea3f2] text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-xs">
                   {day}
                 </span>
               ) : isToday ? (
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full font-semibold text-foreground ring-2 ring-[#2ea3f2]/35 sm:h-8 sm:w-8">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full font-semibold text-foreground ring-2 ring-[#2ea3f2]/35 sm:h-7 sm:w-7">
                   {day}
                 </span>
               ) : (

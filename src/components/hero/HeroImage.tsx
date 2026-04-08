@@ -35,56 +35,43 @@ export default function HeroImage({
   const month = formatMonth(resolvedDate).toUpperCase();
   const year = String(resolvedDate.getFullYear());
 
-  const baseClassName =
-    "relative w-full overflow-hidden bg-zinc-200";
+  const baseClassName = "relative w-full overflow-hidden bg-white";
 
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
-      <Image
-        src={imageUrl}
-        alt={alt}
-        fill
-        priority={priority}
-        unoptimized
-        sizes="100vw"
-        className="object-cover"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-
       <div
         aria-hidden="true"
-        className="absolute bottom-0 left-0 h-48 w-48 bg-[#2ea3f2] [clip-path:polygon(0%_52%,0%_100%,56%_100%)] sm:h-56 sm:w-56"
+        className="absolute -left-[28rem] -top-[28rem] h-[900px] w-[900px] rounded-full bg-[#2ea3f2] sm:-left-[32rem] sm:-top-[32rem] sm:h-[1080px] sm:w-[1080px]"
       />
 
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 right-0 h-56 w-64 bg-[#2ea3f2] [clip-path:polygon(28%_0%,100%_36%,100%_100%,0%_100%)] sm:h-64 sm:w-72"
-      />
-
-      <div aria-hidden="true" className="absolute bottom-0 left-1/2 h-24 w-40 -translate-x-1/2 bg-white [clip-path:polygon(50%_0%,0%_100%,100%_100%)]" />
-
-      <svg
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-14 w-full"
-        viewBox="0 0 1200 120"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0,70 C240,25 360,25 600,108 C840,25 960,25 1200,70 L1200,120 L0,120 Z"
-          fill="#ffffff"
+      <div className="absolute -left-[24rem] top-[calc(100%-48rem)] h-[48rem] w-[48rem] overflow-hidden rounded-full shadow-[0_12px_30px_rgba(0,0,0,0.18)] sm:-left-[27rem] sm:top-[calc(100%-56rem)] sm:h-[56rem] sm:w-[56rem]">
+        <Image
+          src={imageUrl}
+          alt={alt}
+          fill
+          priority={priority}
+          unoptimized
+          sizes="768px"
+          className="object-cover"
         />
-      </svg>
-
-      <div className="absolute bottom-7 right-7 text-right">
-        <p className="text-sm font-semibold tracking-wide text-white/90 sm:text-base">
-          {year}
-        </p>
-        <p className="text-lg font-bold tracking-tight text-white drop-shadow-sm sm:text-2xl">
-          {month}
-        </p>
-        <p className="sr-only">{label}</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/0 to-transparent" />
       </div>
+
+      <div
+        aria-hidden="true"
+        className="absolute bottom-6 right-6 grid h-[104px] w-[104px] place-items-center rounded-full bg-white shadow-[0_14px_34px_rgba(0,0,0,0.14)] ring-1 ring-black/[.06] sm:bottom-7 sm:right-7 sm:h-[120px] sm:w-[120px]"
+      >
+        <div className="text-center leading-none">
+          <p className="text-xs font-semibold tracking-wide text-[#2ea3f2] sm:text-sm">
+            {month}
+          </p>
+          <p className="mt-1 text-base font-bold tracking-tight text-foreground sm:text-lg">
+            {year}
+          </p>
+        </div>
+      </div>
+
+      <p className="sr-only">{label}</p>
     </div>
   );
 }
