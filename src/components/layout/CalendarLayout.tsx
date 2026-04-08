@@ -2,7 +2,7 @@
 
 import { addMonths, startOfMonth, subMonths } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import CalendarGrid from "../calender/CalendarGrid";
 import HeroImage from "../hero/HeroImage";
@@ -13,6 +13,7 @@ export default function CalendarLayout() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
   const [monthDirection, setMonthDirection] = useState<1 | -1>(1);
+  const [isMobileNotesOpen, setIsMobileNotesOpen] = useState(false);
 
   const handleRangeChange = useCallback((nextStart: Date | null, nextEnd: Date | null) => {
     setStartDate(nextStart);
@@ -28,6 +29,17 @@ export default function CalendarLayout() {
     setMonthDirection(1);
     setVisibleMonth((current) => startOfMonth(addMonths(current, 1)));
   }, []);
+
+  useEffect(() => {
+    if (!isMobileNotesOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isMobileNotesOpen]);
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-white p-4 text-foreground sm:p-8">
@@ -95,7 +107,9 @@ export default function CalendarLayout() {
           </div>
 
           <div className="grid gap-5 p-4 md:grid-cols-[1fr_1.6fr] md:gap-7 md:p-6">
-            <NotesPanel className="mt-2 md:mt-3" startDate={startDate} endDate={endDate} />
+            <div className="hidden md:block">
+              <NotesPanel className="mt-2 md:mt-3" startDate={startDate} endDate={endDate} />
+            </div>
 
             <section className="min-w-0">
               <div className="mt-1">
@@ -135,6 +149,55 @@ export default function CalendarLayout() {
             </section>
           </div>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsMobileNotesOpen(true)}
+          aria-label="Open notes"
+          aria-expanded={isMobileNotesOpen}
+          className="fixed bottom-5 right-5 z-40 inline-flex h-12 items-center justify-center rounded-full border border-black/[.08] bg-white px-4 text-sm font-semibold text-foreground shadow-sm shadow-black/[.10] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12] md:hidden"
+        >
+          Notes
+        </button>
+
+        <AnimatePresence>
+          {isMobileNotesOpen ? (
+            <motion.div
+              className="fixed inset-0 z-50 md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileNotesOpen(false)}
+            >
+              <div className="absolute inset-0 bg-black/30" />
+
+              <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Notes"
+                className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-auto rounded-t-[16px] bg-white p-4 shadow-[0_-16px_48px_rgba(0,0,0,0.20)]"
+                initial={{ y: 24, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 24, opacity: 0 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileNotesOpen(false)}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/[.08] bg-white text-sm font-semibold text-foreground shadow-sm shadow-black/[.04] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
+                    aria-label="Close notes"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+
+                <NotesPanel className="mt-3" startDate={startDate} endDate={endDate} />
+              </motion.div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
     </div>
   );
