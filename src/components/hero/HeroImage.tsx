@@ -54,19 +54,6 @@ export default function HeroImage({
 
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
-      <div
-        aria-hidden="true"
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "repeating-radial-gradient(circle at 0% 0%, rgba(46,163,242,0.22) 0px, rgba(46,163,242,0.22) 1px, rgba(46,163,242,0) 1px, rgba(46,163,242,0) 5vmin)",
-          WebkitMaskImage:
-            "radial-gradient(circle at 0% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 72%)",
-          maskImage:
-            "radial-gradient(circle at 0% 0%, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 72%)",
-        }}
-      />
-
       {showQuote ? (
         <div className="pointer-events-none absolute inset-x-4 top-5 z-20 sm:inset-x-auto sm:left-10 sm:top-12 sm:max-w-[20rem]">
           <p
