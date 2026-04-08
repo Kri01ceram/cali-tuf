@@ -55,7 +55,7 @@ export default function HeroImage({
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
       {showQuote ? (
-        <div className="pointer-events-none absolute left-9 top-28 z-20 w-[calc(100%-3.5rem)] max-w-[18rem] sm:left-10 sm:top-14 sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem]">
+        <div className="pointer-events-none absolute left-7 top-28 z-20 w-[calc(100%-3.5rem)] max-w-[18rem] sm:left-10 sm:top-14 sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem]">
           <p
             className={
               "break-words text-pretty text-left font-semibold text-white " +
