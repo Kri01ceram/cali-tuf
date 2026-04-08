@@ -40,8 +40,7 @@ export default function NotesPanel({
   startDate,
   endDate,
 }: NotesPanelProps) {
-  const baseClassName =
-    "rounded-xl border border-black/[.08] bg-background p-4 shadow-sm shadow-black/[.04]";
+  const baseClassName = "min-w-0";
 
   const rangeKey = useMemo(
     () => toRangeKey(startDate, endDate),
@@ -71,11 +70,11 @@ export default function NotesPanel({
       className={className ? `${baseClassName} ${className}` : baseClassName}
     >
       <div className="flex items-baseline justify-between gap-3">
-        <h2 className="text-sm font-semibold tracking-tight text-foreground sm:text-base">
+        <h2 className="text-xs font-semibold tracking-tight text-zinc-500 sm:text-sm">
           Notes
         </h2>
         {rangeLabel ? (
-          <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+          <p className="text-[11px] font-medium text-zinc-500">
             {rangeLabel}
           </p>
         ) : null}
@@ -92,7 +91,12 @@ export default function NotesPanel({
           }
         }}
         placeholder="Write notes…"
-        className="mt-3 min-h-32 w-full resize-y rounded-lg border border-black/[.08] bg-transparent p-3 text-sm leading-6 text-foreground shadow-sm shadow-black/[.02] transition-colors transition-shadow duration-150 ease-out placeholder:text-zinc-500 hover:border-black/[.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
+        className={
+          "mt-3 min-h-56 w-full resize-y rounded-lg border border-black/[.06] bg-white p-3 text-sm leading-7 text-foreground " +
+          "shadow-[0_1px_0_rgba(0,0,0,0.03)] placeholder:text-zinc-400 " +
+          "[background-image:repeating-linear-gradient(to_bottom,transparent,transparent_26px,rgba(0,0,0,0.08)_27px)] " +
+          "[background-size:100%_27px] hover:border-black/[.10] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10]"
+        }
       />
     </section>
   );

@@ -27,7 +27,7 @@ export default function HeroImage({
   const label = monthYearText ?? formatMonthYear(date ?? new Date());
 
   const baseClassName =
-    "relative w-full overflow-hidden bg-zinc-200 h-56 sm:h-72 md:h-96";
+    "relative w-full overflow-hidden bg-zinc-200";
 
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
@@ -41,8 +41,24 @@ export default function HeroImage({
         className="object-cover"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-blue-950/70 via-blue-900/35 to-transparent" />
-      <div className="absolute inset-0 bg-blue-600/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 right-0 h-44 w-44 origin-bottom-right bg-[#2ea3f2]/90 [clip-path:polygon(30%_0%,100%_0%,100%_100%,0%_100%)] sm:h-52 sm:w-52"
+      />
+
+      <svg
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-14 w-full"
+        viewBox="0 0 1200 120"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0,64 C180,110 360,10 540,52 C720,96 900,26 1080,60 C1140,72 1170,82 1200,92 L1200,120 L0,120 Z"
+          fill="#ffffff"
+        />
+      </svg>
 
       <div className="absolute bottom-4 right-4 text-right">
         <p className="text-lg font-semibold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
