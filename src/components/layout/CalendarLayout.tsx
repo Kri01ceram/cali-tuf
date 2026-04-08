@@ -49,16 +49,16 @@ export default function CalendarLayout() {
   const [monthDirection, setMonthDirection] = useState<1 | -1>(1);
   const [isMobileNotesOpen, setIsMobileNotesOpen] = useState(false);
 
-  const [tasks, setTasks] = useState<CalendarTask[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [tasks, setTasks] = useState<CalendarTask[]>([]);
 
+  useEffect(() => {
     try {
       const raw = window.localStorage.getItem(TASKS_STORAGE_KEY);
-      if (!raw) return [];
+      if (!raw) return;
       const parsed = JSON.parse(raw) as unknown;
-      if (!Array.isArray(parsed)) return [];
+      if (!Array.isArray(parsed)) return;
 
-      return parsed
+      const hydrated = parsed
         .filter(Boolean)
         .filter((item): item is CalendarTask => {
           if (typeof item !== "object" || item === null) return false;
@@ -72,10 +72,12 @@ export default function CalendarLayout() {
             typeof candidate.createdAt === "number"
           );
         });
+
+      setTasks(hydrated);
     } catch {
-      return [];
+      // ignore
     }
-  });
+  }, []);
   const [taskText, setTaskText] = useState("");
   const [taskPriority, setTaskPriority] = useState<TaskPriority>("mid");
   const [notesRefreshToken, setNotesRefreshToken] = useState(0);
