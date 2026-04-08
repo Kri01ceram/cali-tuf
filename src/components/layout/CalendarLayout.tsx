@@ -9,18 +9,18 @@ import HeroImage from "../hero/HeroImage";
 import NotesPanel from "../notes/NotesPanel";
 
 const CODING_MONTH_FACTS: string[] = [
-  "Git stores content-addressed snapshots, so branching and merging can stay fast as a repo grows.",
-  "Cache headers often impact perceived speed more than server horsepower because browsers and CDNs can reuse responses.",
-  "A tiny reproducible test case is the fastest way to turn a vague bug into a fix.",
-  "Bundlers can remove dead code and inline constants, so shipping less JavaScript often beats clever micro-optimizations.",
-  "The right database index can change a query from seconds to milliseconds without touching application code.",
-  "Floating point is approximate (0.1 isn’t exact), so money is usually stored as integers or decimals.",
-  "Latency dominates many apps; fewer round-trips and batched requests usually beat faster loops.",
-  "Accessibility is engineering—semantic HTML and keyboard support make UIs usable and easier to maintain.",
-  "Deep recursion can hit call-stack limits, so iterative versions are sometimes safer even when logic is the same.",
-  "Logs should answer questions; include IDs and key state so you can debug without guessing.",
-  "Encryption helps, but secrets management matters most—rotate keys and never ship credentials to the client.",
-  "Clear module boundaries make refactors cheaper because components can change without breaking everything.",
+  "Git stores content-addressed snapshots, so branching and merging can stay fast as a repo grows. Small commits make it easier to review and to bisect later.",
+  "Cache headers often impact perceived speed more than server horsepower, because browsers and CDNs can reuse responses. A good cache strategy can make the UI feel instant.",
+  "A tiny reproducible test case is the fastest way to turn a vague bug into a fix. When you can reproduce it reliably, you can fix it confidently.",
+  "Bundlers can remove dead code and inline constants, so shipping less JavaScript often beats clever micro-optimizations. Measure first, then simplify.",
+  "The right database index can change a query from seconds to milliseconds without touching application code. Always check the query plan before guessing.",
+  "Floating point is approximate (0.1 isn’t exact), so money is usually stored as integers or decimals. Precision bugs are subtle and expensive.",
+  "Latency dominates many apps; fewer round-trips and batched requests usually beat faster loops. Reducing network chatter is often the biggest win.",
+  "Accessibility is engineering—semantic HTML and keyboard support make UIs usable and easier to maintain. A11y improvements usually improve overall UX too.",
+  "Deep recursion can hit call-stack limits, so iterative versions are sometimes safer even when logic is the same. Clarity beats cleverness in the long run.",
+  "Logs should answer questions; include IDs and key state so you can debug without guessing. Good logs are like time travel for incidents.",
+  "Encryption helps, but secrets management matters most—rotate keys and never ship credentials to the client. Assume anything in the browser can be inspected.",
+  "Clear module boundaries make refactors cheaper because components can change without breaking everything. Strong boundaries are a form of future-proofing.",
 ];
 
 type TaskPriority = "low" | "mid" | "high";

@@ -55,13 +55,12 @@ export default function HeroImage({
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
       {showQuote ? (
-        <div className="pointer-events-none absolute inset-x-4 top-5 z-20 sm:inset-x-auto sm:left-10 sm:top-12 sm:max-w-[20rem]">
+          <div className="pointer-events-none absolute left-4 top-5 z-20 max-w-[11.5rem] sm:left-8 sm:top-12 sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem]">
           <p
             className={
               "break-words text-pretty text-left font-semibold text-white " +
-              "text-sm leading-snug sm:text-3xl sm:leading-tight " +
-              "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:6] overflow-hidden " +
-              "sm:[display:block] sm:[-webkit-box-orient:unset] sm:[-webkit-line-clamp:unset] sm:overflow-visible"
+                "text-xs leading-snug sm:text-2xl sm:leading-tight " +
+                "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:8] overflow-hidden"
             }
           >
             {quoteContent}
@@ -87,7 +86,7 @@ export default function HeroImage({
 
       <div
         aria-hidden="true"
-        className="absolute bottom-6 right-6 grid h-[104px] w-[104px] place-items-center rounded-full bg-white shadow-[0_14px_34px_rgba(0,0,0,0.14)] ring-1 ring-black/[.06] sm:bottom-7 sm:right-7 sm:h-[120px] sm:w-[120px]"
+        className="absolute bottom-4 right-4 grid h-[92px] w-[92px] place-items-center rounded-full bg-white shadow-[0_14px_34px_rgba(0,0,0,0.14)] ring-1 ring-black/[.06] sm:bottom-7 sm:right-7 sm:h-[120px] sm:w-[120px]"
       >
         <div className="text-center leading-none">
           <p className="text-xs font-semibold tracking-wide text-[#2ea3f2] sm:text-sm">
