@@ -47,20 +47,21 @@ export default function HeroImage({
   );
 
   const heroCircleClassName = showQuote
-    ? "absolute -left-[13rem] top-[calc(100%-26rem)] h-[26rem] w-[26rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
-    : "absolute -left-[13rem] top-[calc(100%-26rem)] h-[26rem] w-[26rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
+    ? "absolute -left-[6rem] top-[calc(100%-26rem)] h-[26rem] w-[26rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
+    : "absolute -left-[6rem] top-[calc(100%-26rem)] h-[26rem] w-[26rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
 
   const baseClassName = "relative w-full overflow-hidden bg-white";
 
   return (
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
       {showQuote ? (
-          <div className="pointer-events-none absolute left-4 top-5 z-20 max-w-[11.5rem] sm:left-8 sm:top-12 sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem]">
+        <div className="pointer-events-none absolute left-9 top-28 z-20 w-[calc(100%-3.5rem)] max-w-[18rem] sm:left-10 sm:top-14 sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem]">
           <p
             className={
               "break-words text-pretty text-left font-semibold text-white " +
-                "text-xs leading-snug sm:text-2xl sm:leading-tight " +
-                "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:8] overflow-hidden"
+              "text-xs leading-snug sm:text-2xl sm:leading-tight " +
+              "[display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:9] overflow-hidden " +
+              "sm:[-webkit-line-clamp:8]"
             }
           >
             {quoteContent}
