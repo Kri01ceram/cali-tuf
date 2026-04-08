@@ -43,21 +43,24 @@ export default function CalendarLayout() {
         />
 
         <div className="relative overflow-hidden rounded-[12px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.10)]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-0 z-40 h-10 w-16 -translate-x-1/2 -translate-y-1/2 rounded-b-[999px] bg-white shadow-[0_10px_20px_rgba(0,0,0,0.12)]"
+          />
+
           <div className="relative">
-            <div className="relative z-30 bg-white pb-3 pt-6">
+            <div className="relative z-30 bg-white pb-2 pt-4">
               <div
                 aria-hidden="true"
-                className="absolute left-1/2 top-2 h-7 w-7 -translate-x-1/2 rounded-full border-2 border-[#aaa] bg-white"
+                className="pointer-events-none mx-auto flex w-full max-w-[920px] items-end justify-between px-6 sm:px-10"
               >
-                <div className="absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#aaa] bg-white" />
-              </div>
-
-              <div className="pointer-events-none mx-auto flex w-full max-w-[920px] items-center justify-between px-6 sm:px-10">
-                {Array.from({ length: 20 }, (_, index) => (
+                {Array.from({ length: 22 }, (_, index) => (
                   <span
                     key={index}
-                    className="relative h-4 w-2.5 rounded-full border-2 border-[#aaa] bg-transparent shadow-[0_1px_0_rgba(0,0,0,0.08)]"
-                  />
+                    className="relative h-6 w-3 rounded-full border-2 border-[#444] bg-transparent shadow-[0_1px_0_rgba(0,0,0,0.10)]"
+                  >
+                    <span className="absolute left-1/2 top-1.5 h-3 w-1.5 -translate-x-1/2 rounded-full border border-[#666] bg-white" />
+                  </span>
                 ))}
               </div>
 

@@ -92,10 +92,11 @@ export default function NotesPanel({
         }}
         placeholder="Write notes…"
         className={
-          "mt-3 min-h-56 w-full resize-y rounded-lg border border-black/[.06] bg-white p-3 text-sm leading-7 text-foreground " +
+          "mt-3 min-h-56 w-full resize-y rounded-lg border border-black/[.06] bg-white p-3 text-sm leading-[30px] text-foreground " +
           "shadow-[0_1px_0_rgba(0,0,0,0.03)] placeholder:text-zinc-400 " +
-          "[background-image:repeating-linear-gradient(to_bottom,transparent,transparent_26px,rgba(0,0,0,0.08)_27px)] " +
-          "[background-size:100%_27px] hover:border-black/[.10] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10]"
+          "[background-image:repeating-linear-gradient(to_bottom,transparent,transparent_29px,rgba(0,0,0,0.10)_29px,rgba(0,0,0,0.10)_30px)] " +
+          "[background-size:100%_30px] [background-position:0_0.75rem] " +
+          "hover:border-black/[.10] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10]"
         }
       />
     </section>
