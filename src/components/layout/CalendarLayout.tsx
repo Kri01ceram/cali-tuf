@@ -23,12 +23,62 @@ const CODING_MONTH_FACTS: string[] = [
   "Clear module boundaries make refactors cheaper because components can change without breaking everything.",
 ];
 
+type TaskPriority = "low" | "mid" | "high";
+
+type CalendarTask = {
+  id: string;
+  text: string;
+  priority: TaskPriority;
+  startKey: string;
+  endKey: string;
+  createdAt: number;
+};
+
+const TASKS_STORAGE_KEY = "cali-tuf:tasks:v1";
+
+function priorityRank(priority: TaskPriority) {
+  if (priority === "high") return 3;
+  if (priority === "mid") return 2;
+  return 1;
+}
+
 export default function CalendarLayout() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
   const [monthDirection, setMonthDirection] = useState<1 | -1>(1);
   const [isMobileNotesOpen, setIsMobileNotesOpen] = useState(false);
+
+  const [tasks, setTasks] = useState<CalendarTask[]>(() => {
+    if (typeof window === "undefined") return [];
+
+    try {
+      const raw = window.localStorage.getItem(TASKS_STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw) as unknown;
+      if (!Array.isArray(parsed)) return [];
+
+      return parsed
+        .filter(Boolean)
+        .filter((item): item is CalendarTask => {
+          if (typeof item !== "object" || item === null) return false;
+          const candidate = item as Partial<CalendarTask>;
+          return (
+            typeof candidate.id === "string" &&
+            typeof candidate.text === "string" &&
+            (candidate.priority === "low" || candidate.priority === "mid" || candidate.priority === "high") &&
+            typeof candidate.startKey === "string" &&
+            typeof candidate.endKey === "string" &&
+            typeof candidate.createdAt === "number"
+          );
+        });
+    } catch {
+      return [];
+    }
+  });
+  const [taskText, setTaskText] = useState("");
+  const [taskPriority, setTaskPriority] = useState<TaskPriority>("mid");
+  const [notesRefreshToken, setNotesRefreshToken] = useState(0);
 
   const visibleYear = visibleMonth.getFullYear();
   const monthIndex = visibleMonth.getMonth();
@@ -51,6 +101,78 @@ export default function CalendarLayout() {
   }, []);
 
   const notesScopeKey = format(visibleMonth, "yyyy-MM");
+
+  const dayMarkers = (() => {
+    const markers: Record<string, TaskPriority> = {};
+
+    for (const task of tasks) {
+      const start = task.startKey <= task.endKey ? task.startKey : task.endKey;
+      const end = task.startKey <= task.endKey ? task.endKey : task.startKey;
+
+      // Iterate by string keys (yyyy-MM-dd) using Date for safe stepping.
+      const cursor = new Date(`${start}T00:00:00`);
+      const endDateValue = new Date(`${end}T00:00:00`);
+      if (Number.isNaN(cursor.getTime()) || Number.isNaN(endDateValue.getTime())) continue;
+
+      while (cursor <= endDateValue) {
+        const key = format(cursor, "yyyy-MM-dd");
+        const existing = markers[key];
+        if (!existing || priorityRank(task.priority) > priorityRank(existing)) {
+          markers[key] = task.priority;
+        }
+        cursor.setDate(cursor.getDate() + 1);
+      }
+    }
+
+    return markers;
+  })();
+
+  const canAddTask = Boolean(startDate && endDate && taskText.trim().length > 0);
+
+  const addTask = useCallback(() => {
+    if (!startDate || !endDate) return;
+    const trimmed = taskText.trim();
+    if (trimmed.length === 0) return;
+
+    const startKey = format(startDate, "yyyy-MM-dd");
+    const endKey = format(endDate, "yyyy-MM-dd");
+    const task: CalendarTask = {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      text: trimmed,
+      priority: taskPriority,
+      startKey,
+      endKey,
+      createdAt: Date.now(),
+    };
+
+    setTasks((current) => {
+      const next = [task, ...current];
+      try {
+        window.localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+
+    // Append into month notes so the user can edit manually.
+    try {
+      const notesKey = `cali-tuf:notes:${notesScopeKey}`;
+      const previous = window.localStorage.getItem(notesKey) ?? "";
+      const priorityLabel =
+        taskPriority === "high" ? "HIGH" : taskPriority === "mid" ? "MID" : "LOW";
+      const rangeLabel =
+        startKey === endKey ? startKey : startKey <= endKey ? `${startKey}..${endKey}` : `${endKey}..${startKey}`;
+      const line = `- [${priorityLabel}] ${trimmed} (${rangeLabel})`;
+      const nextNotes = previous.trim().length > 0 ? `${previous.replace(/\s*$/u, "")}\n${line}\n` : `${line}\n`;
+      window.localStorage.setItem(notesKey, nextNotes);
+      setNotesRefreshToken((token) => token + 1);
+    } catch {
+      // ignore
+    }
+
+    setTaskText("");
+  }, [startDate, endDate, taskText, taskPriority, notesScopeKey]);
 
   useEffect(() => {
     if (!isMobileNotesOpen) return;
@@ -178,10 +300,51 @@ export default function CalendarLayout() {
                 scopeKey={notesScopeKey}
                 startDate={startDate}
                 endDate={endDate}
+                refreshToken={notesRefreshToken}
               />
             </div>
 
             <section className="min-w-0">
+              {startDate && endDate ? (
+                <div className="mb-3 rounded-xl border border-black/[.08] bg-white p-3 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-xs font-semibold text-foreground/70">
+                      Add a task for this range
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={taskPriority}
+                        onChange={(event) => setTaskPriority(event.target.value as TaskPriority)}
+                        className="h-9 rounded-lg border border-black/[.10] bg-white px-2 text-xs font-semibold text-foreground shadow-sm shadow-black/[.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
+                        aria-label="Task priority"
+                      >
+                        <option value="low">Low</option>
+                        <option value="mid">Mid</option>
+                        <option value="high">High</option>
+                      </select>
+                      <button
+                        type="button"
+                        onClick={addTask}
+                        disabled={!canAddTask}
+                        className={
+                          "inline-flex h-9 items-center justify-center rounded-lg border border-black/[.10] bg-white px-3 text-xs font-semibold text-foreground shadow-sm shadow-black/[.04] transition-colors duration-150 hover:bg-black/[.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12] " +
+                          (!canAddTask ? "opacity-50" : "")
+                        }
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+
+                  <input
+                    value={taskText}
+                    onChange={(event) => setTaskText(event.target.value)}
+                    placeholder="Task description…"
+                    className="mt-2 h-10 w-full rounded-lg border border-black/[.08] bg-white px-3 text-sm text-foreground shadow-[0_1px_0_rgba(0,0,0,0.03)] placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.12]"
+                  />
+                </div>
+              ) : null}
+
               <div className="mt-1">
                 <AnimatePresence initial={false} mode="wait" custom={monthDirection}>
                   <motion.div
@@ -211,6 +374,7 @@ export default function CalendarLayout() {
                       month={visibleMonth}
                       startDate={startDate}
                       endDate={endDate}
+                      dayMarkers={dayMarkers}
                       onRangeChange={handleRangeChange}
                     />
                   </motion.div>
@@ -268,6 +432,7 @@ export default function CalendarLayout() {
                   scopeKey={notesScopeKey}
                   startDate={startDate}
                   endDate={endDate}
+                  refreshToken={notesRefreshToken}
                 />
               </motion.div>
             </motion.div>

@@ -20,6 +20,7 @@ export type CalendarGridProps = {
   month?: Date;
   startDate?: Date | null;
   endDate?: Date | null;
+  dayMarkers?: Record<string, "low" | "mid" | "high">;
   onDayClick?: (day: number) => void;
   onRangeChange?: (startDate: Date | null, endDate: Date | null) => void;
   className?: string;
@@ -31,6 +32,7 @@ export default function CalendarGrid({
   month,
   startDate: controlledStartDate,
   endDate: controlledEndDate,
+  dayMarkers,
   onDayClick,
   onRangeChange,
   className,
@@ -120,9 +122,20 @@ export default function CalendarGrid({
           const isEndpoint = isStart || isEnd;
           const isOutsideMonth = !isSameMonth(date, monthStart);
           const isSunday = getDay(date) === 0;
+          const dateKey = format(date, "yyyy-MM-dd");
+          const marker = dayMarkers ? dayMarkers[dateKey] : undefined;
+
+          const markerClassName =
+            marker === "high"
+              ? "bg-red-500"
+              : marker === "mid"
+                ? "bg-yellow-400"
+                : marker === "low"
+                  ? "bg-green-500"
+                  : "";
 
           const buttonClassName =
-            "aspect-square w-full rounded-lg p-1 text-left text-[11px] font-medium transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10] sm:p-1.5 sm:text-xs" +
+            "relative aspect-square w-full rounded-lg p-1 text-left text-[11px] font-medium transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[.10] sm:p-1.5 sm:text-xs" +
             (isOutsideMonth ? " text-zinc-400" : " text-foreground") +
             (isSunday && !isEndpoint && !isInRange
               ? " text-[#2ea3f2]"
@@ -133,7 +146,7 @@ export default function CalendarGrid({
 
           return (
             <button
-              key={format(date, "yyyy-MM-dd")}
+              key={dateKey}
               type="button"
               onClick={() => {
                 handleDateClick(date);
@@ -155,6 +168,16 @@ export default function CalendarGrid({
               ) : (
                 day
               )}
+
+              {marker ? (
+                <span
+                  aria-hidden="true"
+                  className={
+                    "absolute bottom-1 right-1 h-2.5 w-2.5 rounded-full shadow-[0_1px_0_rgba(0,0,0,0.10)] " +
+                    markerClassName
+                  }
+                />
+              ) : null}
             </button>
           );
         })}

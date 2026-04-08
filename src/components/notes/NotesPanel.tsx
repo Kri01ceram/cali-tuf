@@ -9,6 +9,7 @@ export type NotesPanelProps = {
   scopeKey?: string;
   startDate?: Date | null;
   endDate?: Date | null;
+  refreshToken?: number | string;
 };
 
 function toRangeKey(startDate?: Date | null, endDate?: Date | null) {
@@ -41,6 +42,7 @@ export default function NotesPanel({
   scopeKey,
   startDate,
   endDate,
+  refreshToken,
 }: NotesPanelProps) {
   const baseClassName = "min-w-0";
 
@@ -63,12 +65,13 @@ export default function NotesPanel({
   );
 
   const initialText = useMemo(() => {
+    void refreshToken;
     try {
       return window.localStorage.getItem(fullStorageKey) ?? "";
     } catch {
       return "";
     }
-  }, [fullStorageKey]);
+  }, [fullStorageKey, refreshToken]);
 
   return (
     <section
@@ -86,7 +89,7 @@ export default function NotesPanel({
       </div>
 
       <textarea
-        key={fullStorageKey}
+        key={`${fullStorageKey}:${refreshToken ?? ""}`}
         defaultValue={initialText}
         onChange={(event) => {
           try {
