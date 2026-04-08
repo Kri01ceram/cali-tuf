@@ -38,9 +38,17 @@ export default function HeroImage({
   const year = String(resolvedDate.getFullYear());
   const showQuote = Boolean(quote && quote.trim().length > 0);
 
+  const quoteContent = (
+    <>
+      <span className="opacity-90">“</span>
+      {quote ?? ""}
+      <span className="opacity-90">”</span>
+    </>
+  );
+
   const heroCircleClassName = showQuote
-    ? "absolute -left-[18rem] top-[calc(100%-36rem)] h-[36rem] w-[36rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
-    : "absolute -left-[18rem] top-[calc(100%-36rem)] h-[36rem] w-[36rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
+    ? "absolute -left-[16rem] top-[calc(100%-32rem)] h-[32rem] w-[32rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
+    : "absolute -left-[16rem] top-[calc(100%-32rem)] h-[32rem] w-[32rem] overflow-hidden rounded-full bg-[#2ea3f2] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
 
   const baseClassName = "relative w-full overflow-hidden bg-white";
 
@@ -61,10 +69,20 @@ export default function HeroImage({
 
       {showQuote ? (
         <div className="pointer-events-none absolute inset-x-4 top-6 z-20 sm:inset-x-auto sm:left-10 sm:top-12 sm:max-w-[20rem]">
-          <p className="break-words text-pretty text-left text-base font-semibold leading-snug text-white sm:text-3xl sm:leading-tight">
-            <span className="opacity-90">“</span>
-            {quote}
-            <span className="opacity-90">”</span>
+          <p
+            className="break-words text-pretty text-left text-sm font-semibold leading-snug text-white sm:hidden"
+            style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 6,
+              overflow: "hidden",
+            }}
+          >
+            {quoteContent}
+          </p>
+
+          <p className="hidden break-words text-pretty text-left text-3xl font-semibold leading-tight text-white sm:block">
+            {quoteContent}
           </p>
         </div>
       ) : null}
