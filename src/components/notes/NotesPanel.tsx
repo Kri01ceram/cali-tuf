@@ -6,6 +6,7 @@ import { useMemo } from "react";
 export type NotesPanelProps = {
   className?: string;
   storageKey?: string;
+  scopeKey?: string;
   startDate?: Date | null;
   endDate?: Date | null;
 };
@@ -37,6 +38,7 @@ function toRangeLabel(startDate?: Date | null, endDate?: Date | null) {
 export default function NotesPanel({
   className,
   storageKey = "cali-tuf:notes",
+  scopeKey,
   startDate,
   endDate,
 }: NotesPanelProps) {
@@ -47,10 +49,13 @@ export default function NotesPanel({
     [startDate, endDate]
   );
 
-  const fullStorageKey = useMemo(
-    () => `${storageKey}:${rangeKey}`,
-    [storageKey, rangeKey]
-  );
+  const fullStorageKey = useMemo(() => {
+    if (scopeKey && scopeKey.trim().length > 0) {
+      return `${storageKey}:${scopeKey.trim()}`;
+    }
+
+    return `${storageKey}:${rangeKey}`;
+  }, [storageKey, scopeKey, rangeKey]);
 
   const rangeLabel = useMemo(
     () => toRangeLabel(startDate, endDate),

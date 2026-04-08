@@ -5,6 +5,7 @@ export type HeroImageProps = {
   alt?: string;
   date?: Date;
   monthYearText?: string;
+  quote?: string;
   className?: string;
   priority?: boolean;
 };
@@ -27,6 +28,7 @@ export default function HeroImage({
   alt = "",
   date,
   monthYearText,
+  quote,
   className,
   priority,
 }: HeroImageProps) {
@@ -34,6 +36,11 @@ export default function HeroImage({
   const label = monthYearText ?? formatMonthYear(resolvedDate);
   const month = formatMonth(resolvedDate).toUpperCase();
   const year = String(resolvedDate.getFullYear());
+  const showQuote = Boolean(quote && quote.trim().length > 0);
+
+  const heroCircleClassName = showQuote
+    ? "absolute -left-[18rem] top-[calc(100%-36rem)] h-[36rem] w-[36rem] overflow-hidden rounded-full bg-[#2ea3f2] shadow-[0_12px_30px_rgba(0,0,0,0.18)] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]"
+    : "absolute -left-[18rem] top-[calc(100%-36rem)] h-[36rem] w-[36rem] overflow-hidden rounded-full bg-[#2ea3f2] shadow-[0_12px_30px_rgba(0,0,0,0.18)] sm:-left-[24rem] sm:top-[calc(100%-48rem)] sm:h-[48rem] sm:w-[48rem] lg:-left-[27rem] lg:top-[calc(100%-56rem)] lg:h-[56rem] lg:w-[56rem]";
 
   const baseClassName = "relative w-full overflow-hidden bg-white";
 
@@ -41,19 +48,32 @@ export default function HeroImage({
     <div className={className ? `${baseClassName} ${className}` : baseClassName}>
       <div
         aria-hidden="true"
-        className="absolute -left-[28rem] -top-[28rem] h-[900px] w-[900px] rounded-full bg-[#2ea3f2] sm:-left-[32rem] sm:-top-[32rem] sm:h-[1080px] sm:w-[1080px]"
+        className="absolute -left-[18rem] -top-[18rem] h-[560px] w-[560px] rounded-full bg-[#2ea3f2] sm:-left-[28rem] sm:-top-[28rem] sm:h-[900px] sm:w-[900px] md:-left-[32rem] md:-top-[32rem] md:h-[1080px] md:w-[1080px]"
       />
 
-      <div className="absolute -left-[24rem] top-[calc(100%-48rem)] h-[48rem] w-[48rem] overflow-hidden rounded-full shadow-[0_12px_30px_rgba(0,0,0,0.18)] sm:-left-[27rem] sm:top-[calc(100%-56rem)] sm:h-[56rem] sm:w-[56rem]">
-        <Image
-          src={imageUrl}
-          alt={alt}
-          fill
-          priority={priority}
-          unoptimized
-          sizes="768px"
-          className="object-cover"
-        />
+      {showQuote ? (
+        <div className="pointer-events-none absolute left-6 top-10 z-20 max-w-[15rem] sm:left-10 sm:top-12 sm:max-w-[20rem]">
+          <p className="text-pretty text-left text-2xl font-semibold leading-tight text-white sm:text-3xl">
+            <span className="opacity-90">“</span>
+            {quote}
+            <span className="opacity-90">”</span>
+          </p>
+        </div>
+      ) : null}
+
+      <div className={heroCircleClassName}>
+        {showQuote ? null : (
+          <Image
+            src={imageUrl}
+            alt={alt}
+            fill
+            priority={priority}
+            unoptimized
+            sizes="768px"
+            className="object-cover"
+          />
+        )}
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/10" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-black/0 to-transparent" />
       </div>
 

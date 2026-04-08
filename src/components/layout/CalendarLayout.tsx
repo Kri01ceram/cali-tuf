@@ -1,6 +1,6 @@
 "use client";
 
-import { addMonths, startOfMonth, subMonths } from "date-fns";
+import { addMonths, format, startOfMonth, subMonths } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 
@@ -29,6 +29,8 @@ export default function CalendarLayout() {
     setMonthDirection(1);
     setVisibleMonth((current) => startOfMonth(addMonths(current, 1)));
   }, []);
+
+  const notesScopeKey = format(visibleMonth, "yyyy-MM");
 
   useEffect(() => {
     if (!isMobileNotesOpen) return;
@@ -100,6 +102,7 @@ export default function CalendarLayout() {
                 imageUrl="/window.svg"
                 alt="Calendar hero"
                 date={visibleMonth}
+                quote="Make time for what matters."
                 priority
                 className="h-[360px] sm:h-[420px] md:h-[480px]"
               />
@@ -108,7 +111,12 @@ export default function CalendarLayout() {
 
           <div className="grid gap-5 p-4 md:grid-cols-[1fr_1.6fr] md:gap-7 md:p-6">
             <div className="hidden md:block">
-              <NotesPanel className="mt-2 md:mt-3" startDate={startDate} endDate={endDate} />
+              <NotesPanel
+                className="mt-2 md:mt-3"
+                scopeKey={notesScopeKey}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </div>
 
             <section className="min-w-0">
@@ -193,7 +201,12 @@ export default function CalendarLayout() {
                   </button>
                 </div>
 
-                <NotesPanel className="mt-3" startDate={startDate} endDate={endDate} />
+                <NotesPanel
+                  className="mt-3"
+                  scopeKey={notesScopeKey}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
               </motion.div>
             </motion.div>
           ) : null}
